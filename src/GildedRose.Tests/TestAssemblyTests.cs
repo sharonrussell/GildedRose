@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using GildedRose.Console;
 using NUnit.Framework;
 
@@ -40,7 +39,7 @@ namespace GildedRose.Tests
             var vest = Items.Single(x => x.Name.Equals("+5 Dexterity Vest"));
             var initialVestQuality = vest.Quality;
 
-            itemUpdater.UpdateQuality(Items);
+            itemUpdater.UpdateItems(Items);
 
             Assert.That(initialVestQuality > vest.Quality);
         }
@@ -51,7 +50,7 @@ namespace GildedRose.Tests
             var vest = Items.Single(x => x.Name.Equals("+5 Dexterity Vest"));
             var initialVestSellIn = vest.SellIn;
 
-            itemUpdater.UpdateQuality(Items);
+            itemUpdater.UpdateItems(Items);
 
             Assert.That(initialVestSellIn > vest.SellIn);
         }
@@ -63,11 +62,11 @@ namespace GildedRose.Tests
             var initialVestQuality = vest.Quality;
             vest.SellIn = 1;
 
-            itemUpdater.UpdateQuality(Items);
+            itemUpdater.UpdateItems(Items);
 
             var intermediaryVestQuality = vest.Quality;
 
-            itemUpdater.UpdateQuality(Items);
+            itemUpdater.UpdateItems(Items);
 
             var initialDifference = initialVestQuality - intermediaryVestQuality;
             var newDifference = intermediaryVestQuality - vest.Quality;
