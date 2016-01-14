@@ -6,6 +6,10 @@ namespace GildedRose.Console
     {
         public void UpdateQuality(List<Item> items)
         {
+            foreach (var item in items)
+            {
+                item.Quality -= 1;
+            }
         }
     }
 }
