@@ -79,11 +79,9 @@ namespace GildedRose.Tests
         public void TheQualityOfAnItemCannotBeNegative()
         {
             var manaCake = Items.Single(x => x.Name.Equals("Conjured Mana Cake"));
-
-            for (var i = 0; i < 7; i++)
-            {
-                itemUpdater.UpdateItems(Items);
-            }
+            manaCake.Quality = 0;
+           
+            itemUpdater.UpdateItems(Items);
 
             Assert.That(manaCake.Quality == 0);
         }
@@ -98,6 +96,17 @@ namespace GildedRose.Tests
             var newQuality = agedBrie.Quality;
 
             Assert.That(initialQuality < newQuality);
+        }
+
+        [Test]
+        public void TheQualityOfAnItemCannotBeGreaterThan50()
+        {
+            var agedBrie = Items.Single(x => x.Name.Equals("Aged Brie"));
+            agedBrie.Quality = 50;
+
+            itemUpdater.UpdateItems(Items);
+
+            Assert.That(agedBrie.Quality == 50);
         }
     }
 }
