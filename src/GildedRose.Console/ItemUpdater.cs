@@ -15,6 +15,26 @@ namespace GildedRose.Console
 
         private void UpdateQuality(Item item)
         {
+            if (item.Name == "Aged Brie")
+            {
+                IncreaseQuality(item);
+            }
+            else
+            {
+                DecreaseQuality(item);
+            }
+
+        }
+
+
+
+        private void UpdateSellIn(Item item)
+        {
+            item.SellIn -= 1;
+        }
+
+        private void DecreaseQuality(Item item)
+        {
             var decreasesBy = item.SellIn < 1 ? 2 : 1;
 
             item.Quality -= decreasesBy;
@@ -25,9 +45,9 @@ namespace GildedRose.Console
             }
         }
 
-        private void UpdateSellIn(Item item)
+        private void IncreaseQuality(Item item)
         {
-            item.SellIn -= 1;
+            item.Quality += 1;
         }
     }
 }
