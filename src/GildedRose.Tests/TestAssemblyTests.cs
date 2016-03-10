@@ -127,7 +127,7 @@ namespace GildedRose.Tests
         {
             var backStagePass = Items.Single(x => x.Name.Equals("Backstage passes to a TAFKAL80ETC concert"));
             var initialQuality = backStagePass.Quality;
-            backStagePass.SellIn = 10;
+            backStagePass.SellIn = 9;
 
             itemUpdater.UpdateItems(Items);
 
@@ -139,7 +139,7 @@ namespace GildedRose.Tests
         {
             var backStagePass = Items.Single(x => x.Name.Equals("Backstage passes to a TAFKAL80ETC concert"));
             var initialQuality = backStagePass.Quality;
-            backStagePass.SellIn = 5;
+            backStagePass.SellIn = 4;
 
             itemUpdater.UpdateItems(Items);
 

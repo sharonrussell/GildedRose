@@ -20,7 +20,8 @@ namespace GildedRose.Console
         {
             if (item.Name == "Aged Brie" || item.Name == "Backstage passes to a TAFKAL80ETC concert")
             {
-                IncreaseQuality(item);
+                var amountToIncreaseBy = CalculateIncrease(item);
+                IncreaseQuality(item, amountToIncreaseBy);
             }
             else
             {
@@ -45,20 +46,29 @@ namespace GildedRose.Console
             }
         }
 
-        private void IncreaseQuality(Item item)
+        private void IncreaseQuality(Item item, int increaseBy)
         {
-            if (item.Quality >= 50) return;
+            item.Quality += increaseBy;
+        }
+
+        private int CalculateIncrease(Item item)
+        {
+            if (item.Quality >= 50) return 0;
+            
             if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
             {
-                if (item.SellIn >= 10)
+                if (item.SellIn <= 5)
                 {
-                    item.Quality += 2;
+                   return 3;
+                }
+                if (item.SellIn <= 10)
+                {
+                    return 2;
                 }
             }
-            else
-            {
-                item.Quality += 1;
-            }
+
+            return 1;
+
         }
     }
 }
