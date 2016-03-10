@@ -1,3 +1,4 @@
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using GildedRose.Console;
@@ -85,6 +86,18 @@ namespace GildedRose.Tests
             }
 
             Assert.That(manaCake.Quality == 0);
+        }
+
+        [Test]
+        public void AgedBrieShouldIncreaseInQualityAsItAges()
+        {
+            var agedBrie = Items.Single(x => x.Name.Equals("Aged Brie"));
+            var initialQuality = agedBrie.Quality;
+
+            itemUpdater.UpdateItems(Items);
+            var newQuality = agedBrie.Quality;
+
+            Assert.That(initialQuality < newQuality);
         }
     }
 }
