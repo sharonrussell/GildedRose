@@ -18,6 +18,11 @@ namespace GildedRose.Console
             var decreasesBy = item.SellIn < 1 ? 2 : 1;
 
             item.Quality -= decreasesBy;
+
+            if (item.Quality < 0)
+            {
+                item.Quality = 0;
+            }
         }
 
         private void UpdateSellIn(Item item)
