@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GildedRose.Console
@@ -16,21 +17,18 @@ namespace GildedRose.Console
 
         private void UpdateQuality(Item item)
         {
-            if (item.Name == "Aged Brie" || item.Name == "Backstage passes to a TAFKAL80ETC concert")
+            switch (item.Name)
             {
-                if (item.SellIn == 0)
-                {
-                    item.Quality = 0;
-                }
-                else
-                {
+                case "Backstage passes to a TAFKAL80ETC concert":
+                    CalculateBackStagePassValue(item);
+                    break;
+                case "Aged Brie":
                     var amountToIncreaseBy = CalculateIncrease(item);
                     IncreaseQuality(item, amountToIncreaseBy);
-                }
-            }
-            else
-            {
-                DecreaseQuality(item);
+                    break;
+                default:
+                    DecreaseQuality(item);
+                    break;
             }
         }
 
@@ -41,14 +39,31 @@ namespace GildedRose.Console
 
         private void DecreaseQuality(Item item)
         {
-            var decreasesBy = item.SellIn < 1 ? 2 : 1;
+            var amountToDecreaseBy = CalculateDecrease(item);
 
-            item.Quality -= decreasesBy;
+            item.Quality -= amountToDecreaseBy;
 
             if (item.Quality < 0)
             {
                 item.Quality = 0;
             }
+        }
+
+        private int CalculateDecrease(Item item)
+        {
+           var amountToDecreaseBy = item.SellIn < 1 ? 2 : 1;
+
+            if (IsConjured(item.Name))
+            {
+                amountToDecreaseBy *= 2;
+            }
+
+            return amountToDecreaseBy;
+        }
+
+        private bool IsConjured(string itemName)
+        {
+            return itemName.Contains("Conjured");
         }
 
         private void IncreaseQuality(Item item, int increaseBy)
@@ -58,22 +73,27 @@ namespace GildedRose.Console
 
         private int CalculateIncrease(Item item)
         {
-            if (item.Quality >= 50) return 0;
-            
-            if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
+            return item.Quality >= 50 ? 0 : 1;
+        }
+
+        private void CalculateBackStagePassValue(Item item)
+        {
+            var daysToConcert = item.SellIn;
+
+            if (daysToConcert == 0)
             {
-                if (item.SellIn <= 5)
-                {
-                   return 3;
-                }
-                if (item.SellIn <= 10)
-                {
-                    return 2;
-                }
+                item.Quality = 0;
             }
-
-            return 1;
-
+            else if (daysToConcert <= 5)
+            {
+                item.Quality += 3;
+            }
+            else if (daysToConcert <= 10)
+            {
+                item.Quality += 2;
+            }
+            else
+                item.Quality += 1;
         }
     }
 }
