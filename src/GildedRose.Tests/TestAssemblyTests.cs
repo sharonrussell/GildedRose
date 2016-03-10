@@ -108,5 +108,18 @@ namespace GildedRose.Tests
 
             Assert.That(agedBrie.Quality == 50);
         }
+
+        [Test]
+        public void SulfurasShouldNotBeSoldOrDecreaseInQuality()
+        {
+            var sulfuras = Items.Single(x => x.Name.Equals("Sulfuras, Hand of Ragnaros"));
+            var initialQuality = sulfuras.Quality;
+            var initialSellin = sulfuras.SellIn;
+
+            itemUpdater.UpdateItems(Items);
+
+            Assert.That(initialQuality, Is.EqualTo(sulfuras.Quality));
+            Assert.That(initialSellin, Is.EqualTo(sulfuras.SellIn));
+        }
     }
 }
