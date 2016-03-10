@@ -23,10 +23,7 @@ namespace GildedRose.Console
             {
                 DecreaseQuality(item);
             }
-
         }
-
-
 
         private void UpdateSellIn(Item item)
         {
@@ -47,7 +44,8 @@ namespace GildedRose.Console
 
         private void IncreaseQuality(Item item)
         {
-            item.Quality += 1;
+            if (item.Quality < 50)
+                item.Quality += 1;
         }
     }
 }
