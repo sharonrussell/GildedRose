@@ -8,8 +8,11 @@ namespace GildedRose.Console
         {
             foreach (var item in items)
             {
-                UpdateQuality(item);
-                UpdateSellIn(item);
+                if(item.Name != "Sulfuras, Hand of Ragnaros")
+                {
+                   UpdateQuality(item);
+                   UpdateSellIn(item);
+                }
             }
         }
 
