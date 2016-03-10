@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace GildedRose.Console
 {
@@ -6,13 +7,10 @@ namespace GildedRose.Console
     {
         public void UpdateItems(List<Item> items)
         {
-            foreach (var item in items)
+            foreach (var item in items.Where(item => item.Name != "Sulfuras, Hand of Ragnaros"))
             {
-                if (item.Name != "Sulfuras, Hand of Ragnaros")
-                {
-                   UpdateQuality(item);
-                   UpdateSellIn(item);
-                }
+                UpdateQuality(item);
+                UpdateSellIn(item);
             }
         }
 
@@ -20,8 +18,15 @@ namespace GildedRose.Console
         {
             if (item.Name == "Aged Brie" || item.Name == "Backstage passes to a TAFKAL80ETC concert")
             {
-                var amountToIncreaseBy = CalculateIncrease(item);
-                IncreaseQuality(item, amountToIncreaseBy);
+                if (item.SellIn == 0)
+                {
+                    item.Quality = 0;
+                }
+                else
+                {
+                    var amountToIncreaseBy = CalculateIncrease(item);
+                    IncreaseQuality(item, amountToIncreaseBy);
+                }
             }
             else
             {

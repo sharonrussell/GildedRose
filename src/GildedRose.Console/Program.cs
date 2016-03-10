@@ -10,7 +10,7 @@ namespace GildedRose.Console
         {
             System.Console.WriteLine("OMGHAI!");
 
-            ItemUpdater app = new ItemUpdater();
+            var app = new ItemUpdater();
 
             Items = new List<Item>
             {
