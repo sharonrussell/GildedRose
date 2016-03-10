@@ -73,5 +73,18 @@ namespace GildedRose.Tests
 
             Assert.That(newDifference == initialDifference * 2);
         }
+
+        [Test]
+        public void TheQualityOfAnItemCannotBeNegative()
+        {
+            var manaCake = Items.Single(x => x.Name.Equals("Conjured Mana Cake"));
+
+            for (var i = 0; i < 7; i++)
+            {
+                itemUpdater.UpdateItems(Items);
+            }
+
+            Assert.That(manaCake.Quality == 0);
+        }
     }
 }
