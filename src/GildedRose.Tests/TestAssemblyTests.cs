@@ -145,5 +145,15 @@ namespace GildedRose.Tests
 
             Assert.That(initialQuality, Is.EqualTo(backStagePass.Quality - 3));
         }
+
+        [Test]
+        public void BackStagePassQualityDropsTo0WhenSellInIs0()
+        {
+            var backStagePass = Items.Single(x => x.Name.Equals("Backstage passes to a TAFKAL80ETC concert"));
+            backStagePass.SellIn = 0;
+            itemUpdater.UpdateItems(Items);
+
+            Assert.That(backStagePass.Quality, Is.EqualTo(0));
+        }
     }
 }
