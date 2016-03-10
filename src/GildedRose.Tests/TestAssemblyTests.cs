@@ -155,5 +155,17 @@ namespace GildedRose.Tests
 
             Assert.That(backStagePass.Quality, Is.EqualTo(0));
         }
+
+        [Test]
+        public void ConjuredItemsDegradeTwiceAsFast()
+        {
+            var conjuredItem = Items.Single(x => x.Name.Equals("Conjured Mana Cake"));
+            var initialQuality = conjuredItem.Quality;
+
+            itemUpdater.UpdateItems(Items);
+            var newQuality = conjuredItem.Quality;
+
+            Assert.That(initialQuality, Is.EqualTo(newQuality + 2));
+        }
     }
 }
