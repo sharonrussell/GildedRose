@@ -2,7 +2,7 @@ namespace GildedRose.Console
 {
     public static class UpdateCalculator
     {
-        public static int CalculateBackStagePassQualityIncrease(Item item)
+        public static int BackStagePassIncrease(Item item)
         {
             if (item.SellIn <= 5)
                 return 3;
@@ -10,7 +10,7 @@ namespace GildedRose.Console
             return item.SellIn <= 10 ? 2 : 1;
         }
 
-        public static int CalculateDecrease(Item item, bool isConjured)
+        public static int Decrease(Item item, bool isConjured)
         {
             var amountToDecreaseBy = item.SellIn < 1 ? 2 : 1;
 
@@ -21,7 +21,7 @@ namespace GildedRose.Console
         }
 
 
-        public static int CalculateIncrease(Item item)
+        public static int Increase(Item item)
         {
             return item.Quality >= 50 ? 0 : 1;
         }

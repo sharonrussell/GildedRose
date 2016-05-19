@@ -29,8 +29,10 @@ namespace GildedRose.Console
 
         private void DecreaseQuality(Item item)
         {
-            if (item.Quality - UpdateCalculator.CalculateIncrease(item) >= 0)
-                item.Quality -= UpdateCalculator.CalculateDecrease(item, ItemChecker.IsConjured(item.Name));
+            var decrease = UpdateCalculator.Decrease(item, ItemChecker.IsConjured(item.Name));
+
+            if (item.Quality - decrease >= 0)
+                item.Quality -= decrease;
         }
 
         private void IncreaseQuality(Item item)
@@ -38,15 +40,15 @@ namespace GildedRose.Console
             if (ItemChecker.IsBackStagePass(item.Name))
                 UpdateBackStagePass(item);
             else
-                item.Quality += UpdateCalculator.CalculateIncrease(item);
+                item.Quality += UpdateCalculator.Increase(item);
         }
 
         private void UpdateBackStagePass(Item item)
         {
-            if (item.SellIn == 0)
+            if (ItemChecker.BackStagePassExpired(item))
                 item.Quality = 0;
             else
-                item.Quality += UpdateCalculator.CalculateBackStagePassQualityIncrease(item);
+                item.Quality += UpdateCalculator.BackStagePassIncrease(item);
         }
     }
 }

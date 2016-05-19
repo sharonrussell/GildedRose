@@ -26,5 +26,10 @@
         {
             return itemName.Equals("Sulfuras, Hand of Ragnaros");
         }
+
+        public static bool BackStagePassExpired(Item item)
+        {
+            return item.SellIn == 0;
+        }
     }
 }
