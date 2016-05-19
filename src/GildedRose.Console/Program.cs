@@ -2,17 +2,15 @@
 
 namespace GildedRose.Console
 {
-    public class Program
+    public static class Program
     {
-        private static List<Item> Items;
+        private static List<Item> _items;
 
-        private static void Main(string[] args)
+        private static void Main()
         {
-            System.Console.WriteLine("OMGHAI!");
-
             var app = new ItemUpdater();
 
-            Items = new List<Item>
+            _items = new List<Item>
             {
                 new Item {Name = "+5 Dexterity Vest", SellIn = 10, Quality = 20},
                 new Item {Name = "Aged Brie", SellIn = 2, Quality = 0},
@@ -27,7 +25,7 @@ namespace GildedRose.Console
                 new Item {Name = "Conjured Mana Cake", SellIn = 3, Quality = 6}
             };
 
-            app.UpdateItems(Items);
+            app.UpdateItems(_items);
 
             System.Console.ReadKey();
         }

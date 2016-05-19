@@ -7,7 +7,7 @@ namespace GildedRose.Console
     {
         public void UpdateItems(List<Item> items)
         {
-            foreach (var item in items.Where(item => item.Name != "Sulfuras, Hand of Ragnaros"))
+            foreach (var item in items.Where(item => !ItemChecker.IsLegendary(item.Name)))
             {
                 UpdateQuality(item);
                 UpdateSellIn(item);
@@ -16,7 +16,7 @@ namespace GildedRose.Console
 
         private void UpdateQuality(Item item)
         {
-            if (IncreasesOverTime(item.Name))
+            if (ItemChecker.IncreasesOverTime(item.Name))
                 IncreaseQuality(item);
             else
                 DecreaseQuality(item);
@@ -29,51 +29,16 @@ namespace GildedRose.Console
 
         private void DecreaseQuality(Item item)
         {
-            if(item.Quality - CalculateIncrease(item) >= 0)
-                item.Quality -= CalculateDecrease(item);
-        }
-
-        private int CalculateDecrease(Item item)
-        {
-            var amountToDecreaseBy = item.SellIn < 1 ? 2 : 1;
-
-            if (IsConjured(item.Name))
-                amountToDecreaseBy *= 2;
-
-            return amountToDecreaseBy;
-        }
-
-        private bool IsConjured(string itemName)
-        {
-            return itemName.Contains("Conjured");
-        }
-
-        private bool IncreasesOverTime(string itemName)
-        {
-            return IsAgedBrie(itemName) || IsBackStagePass(itemName);
-        }
-
-        private static bool IsBackStagePass(string itemName)
-        {
-            return itemName.Equals("Backstage passes to a TAFKAL80ETC concert");
-        }
-
-        private static bool IsAgedBrie(string itemName)
-        {
-            return itemName.Equals("Aged Brie");
+            if (item.Quality - UpdateCalculator.CalculateIncrease(item) >= 0)
+                item.Quality -= UpdateCalculator.CalculateDecrease(item, ItemChecker.IsConjured(item.Name));
         }
 
         private void IncreaseQuality(Item item)
         {
-            if (IsBackStagePass(item.Name))
+            if (ItemChecker.IsBackStagePass(item.Name))
                 UpdateBackStagePass(item);
             else
-                item.Quality += CalculateIncrease(item);
-        }
-
-        private int CalculateIncrease(Item item)
-        {
-            return item.Quality >= 50 ? 0 : 1;
+                item.Quality += UpdateCalculator.CalculateIncrease(item);
         }
 
         private void UpdateBackStagePass(Item item)
@@ -81,15 +46,7 @@ namespace GildedRose.Console
             if (item.SellIn == 0)
                 item.Quality = 0;
             else
-                item.Quality += CalculateBackStagePassQualityIncrease(item);
-        }
-
-        private int CalculateBackStagePassQualityIncrease(Item item)
-        {
-            if (item.SellIn <= 5)
-                return 3;
-
-            return item.SellIn <= 10 ? 2 : 1;
+                item.Quality += UpdateCalculator.CalculateBackStagePassQualityIncrease(item);
         }
     }
 }
