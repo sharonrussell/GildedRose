@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestAssemblyTests.cs" />
+    <Compile Include="ItemUpdaterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

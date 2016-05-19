@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace GildedRose.Console
@@ -17,19 +16,10 @@ namespace GildedRose.Console
 
         private void UpdateQuality(Item item)
         {
-            switch (item.Name)
-            {
-                case "Backstage passes to a TAFKAL80ETC concert":
-                    CalculateBackStagePassValue(item);
-                    break;
-                case "Aged Brie":
-                    var amountToIncreaseBy = CalculateIncrease(item);
-                    IncreaseQuality(item, amountToIncreaseBy);
-                    break;
-                default:
-                    DecreaseQuality(item);
-                    break;
-            }
+            if (IncreasesOverTime(item.Name))
+                IncreaseQuality(item);
+            else
+                DecreaseQuality(item);
         }
 
         private void UpdateSellIn(Item item)
@@ -39,24 +29,16 @@ namespace GildedRose.Console
 
         private void DecreaseQuality(Item item)
         {
-            var amountToDecreaseBy = CalculateDecrease(item);
-
-            item.Quality -= amountToDecreaseBy;
-
-            if (item.Quality < 0)
-            {
-                item.Quality = 0;
-            }
+            if(item.Quality - CalculateIncrease(item) >= 0)
+                item.Quality -= CalculateDecrease(item);
         }
 
         private int CalculateDecrease(Item item)
         {
-           var amountToDecreaseBy = item.SellIn < 1 ? 2 : 1;
+            var amountToDecreaseBy = item.SellIn < 1 ? 2 : 1;
 
             if (IsConjured(item.Name))
-            {
                 amountToDecreaseBy *= 2;
-            }
 
             return amountToDecreaseBy;
         }
@@ -66,9 +48,27 @@ namespace GildedRose.Console
             return itemName.Contains("Conjured");
         }
 
-        private void IncreaseQuality(Item item, int increaseBy)
+        private bool IncreasesOverTime(string itemName)
         {
-            item.Quality += increaseBy;
+            return IsAgedBrie(itemName) || IsBackStagePass(itemName);
+        }
+
+        private static bool IsBackStagePass(string itemName)
+        {
+            return itemName.Equals("Backstage passes to a TAFKAL80ETC concert");
+        }
+
+        private static bool IsAgedBrie(string itemName)
+        {
+            return itemName.Equals("Aged Brie");
+        }
+
+        private void IncreaseQuality(Item item)
+        {
+            if (IsBackStagePass(item.Name))
+                UpdateBackStagePass(item);
+            else
+                item.Quality += CalculateIncrease(item);
         }
 
         private int CalculateIncrease(Item item)
@@ -76,24 +76,20 @@ namespace GildedRose.Console
             return item.Quality >= 50 ? 0 : 1;
         }
 
-        private void CalculateBackStagePassValue(Item item)
+        private void UpdateBackStagePass(Item item)
         {
-            var daysToConcert = item.SellIn;
-
-            if (daysToConcert == 0)
-            {
+            if (item.SellIn == 0)
                 item.Quality = 0;
-            }
-            else if (daysToConcert <= 5)
-            {
-                item.Quality += 3;
-            }
-            else if (daysToConcert <= 10)
-            {
-                item.Quality += 2;
-            }
             else
-                item.Quality += 1;
+                item.Quality += CalculateBackStagePassQuality(item);
+        }
+
+        private int CalculateBackStagePassQuality(Item item)
+        {
+            if (item.SellIn <= 5)
+                return 3;
+
+            return item.SellIn <= 10 ? 2 : 1;
         }
     }
 }

@@ -1,4 +1,3 @@
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using GildedRose.Console;
@@ -8,10 +7,10 @@ using NUnit.Framework;
 namespace GildedRose.Tests
 {
     [TestFixture]
-    public class TestAssemblyTests
+    public class ItemUpdaterTests
     {
         private List<Item> Items { get; set; }
-        private ItemUpdater itemUpdater;
+        private ItemUpdater _itemUpdater;
 
         [SetUp]
         public void SetUp()
@@ -31,7 +30,7 @@ namespace GildedRose.Tests
                 new Item {Name = "Conjured Mana Cake", SellIn = 3, Quality = 6}
             };
 
-            itemUpdater = new ItemUpdater();
+            _itemUpdater = new ItemUpdater();
         }
 
         [Test]
@@ -40,7 +39,7 @@ namespace GildedRose.Tests
             var vest = Items.Single(x => x.Name.Equals("+5 Dexterity Vest"));
             var initialVestQuality = vest.Quality;
 
-            itemUpdater.UpdateItems(Items);
+            _itemUpdater.UpdateItems(Items);
 
             Assert.That(initialVestQuality > vest.Quality);
         }
@@ -51,7 +50,7 @@ namespace GildedRose.Tests
             var vest = Items.Single(x => x.Name.Equals("+5 Dexterity Vest"));
             var initialVestSellIn = vest.SellIn;
 
-            itemUpdater.UpdateItems(Items);
+            _itemUpdater.UpdateItems(Items);
 
             Assert.That(initialVestSellIn > vest.SellIn);
         }
@@ -63,11 +62,11 @@ namespace GildedRose.Tests
             var initialVestQuality = vest.Quality;
             vest.SellIn = 1;
 
-            itemUpdater.UpdateItems(Items);
+            _itemUpdater.UpdateItems(Items);
 
             var intermediaryVestQuality = vest.Quality;
 
-            itemUpdater.UpdateItems(Items);
+            _itemUpdater.UpdateItems(Items);
 
             var initialDifference = initialVestQuality - intermediaryVestQuality;
             var newDifference = intermediaryVestQuality - vest.Quality;
@@ -81,7 +80,7 @@ namespace GildedRose.Tests
             var manaCake = Items.Single(x => x.Name.Equals("Conjured Mana Cake"));
             manaCake.Quality = 0;
            
-            itemUpdater.UpdateItems(Items);
+            _itemUpdater.UpdateItems(Items);
 
             Assert.That(manaCake.Quality == 0);
         }
@@ -92,7 +91,7 @@ namespace GildedRose.Tests
             var agedBrie = Items.Single(x => x.Name.Equals("Aged Brie"));
             var initialQuality = agedBrie.Quality;
 
-            itemUpdater.UpdateItems(Items);
+            _itemUpdater.UpdateItems(Items);
             var newQuality = agedBrie.Quality;
 
             Assert.That(initialQuality < newQuality);
@@ -104,7 +103,7 @@ namespace GildedRose.Tests
             var agedBrie = Items.Single(x => x.Name.Equals("Aged Brie"));
             agedBrie.Quality = 50;
 
-            itemUpdater.UpdateItems(Items);
+            _itemUpdater.UpdateItems(Items);
 
             Assert.That(agedBrie.Quality == 50);
         }
@@ -116,7 +115,7 @@ namespace GildedRose.Tests
             var initialQuality = sulfuras.Quality;
             var initialSellin = sulfuras.SellIn;
 
-            itemUpdater.UpdateItems(Items);
+            _itemUpdater.UpdateItems(Items);
 
             Assert.That(initialQuality, Is.EqualTo(sulfuras.Quality));
             Assert.That(initialSellin, Is.EqualTo(sulfuras.SellIn));
@@ -129,7 +128,7 @@ namespace GildedRose.Tests
             var initialQuality = backStagePass.Quality;
             backStagePass.SellIn = 9;
 
-            itemUpdater.UpdateItems(Items);
+            _itemUpdater.UpdateItems(Items);
 
             Assert.That(initialQuality, Is.EqualTo(backStagePass.Quality - 2));
         }
@@ -141,7 +140,7 @@ namespace GildedRose.Tests
             var initialQuality = backStagePass.Quality;
             backStagePass.SellIn = 4;
 
-            itemUpdater.UpdateItems(Items);
+            _itemUpdater.UpdateItems(Items);
 
             Assert.That(initialQuality, Is.EqualTo(backStagePass.Quality - 3));
         }
@@ -151,7 +150,7 @@ namespace GildedRose.Tests
         {
             var backStagePass = Items.Single(x => x.Name.Equals("Backstage passes to a TAFKAL80ETC concert"));
             backStagePass.SellIn = 0;
-            itemUpdater.UpdateItems(Items);
+            _itemUpdater.UpdateItems(Items);
 
             Assert.That(backStagePass.Quality, Is.EqualTo(0));
         }
@@ -162,7 +161,7 @@ namespace GildedRose.Tests
             var conjuredItem = Items.Single(x => x.Name.Equals("Conjured Mana Cake"));
             var initialQuality = conjuredItem.Quality;
 
-            itemUpdater.UpdateItems(Items);
+            _itemUpdater.UpdateItems(Items);
             var newQuality = conjuredItem.Quality;
 
             Assert.That(initialQuality, Is.EqualTo(newQuality + 2));
