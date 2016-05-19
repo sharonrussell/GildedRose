@@ -81,10 +81,10 @@ namespace GildedRose.Console
             if (item.SellIn == 0)
                 item.Quality = 0;
             else
-                item.Quality += CalculateBackStagePassQuality(item);
+                item.Quality += CalculateBackStagePassQualityIncrease(item);
         }
 
-        private int CalculateBackStagePassQuality(Item item)
+        private int CalculateBackStagePassQualityIncrease(Item item)
         {
             if (item.SellIn <= 5)
                 return 3;
